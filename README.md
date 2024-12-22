@@ -8,7 +8,8 @@
 ## To train the stylegan2, train the stylegan2 in the enviroment and package
 We implement fine-tuning on the pre-trained generator based on the paper above 
 https://github.com/rosinality/stylegan2-pytorch
-
+(noted for loading the finetuned stylegan2, we adjust the psp.py in model file)
+(fine tune dataset：https://github.com/HCIILAB/SCUT-FBP5500-Database-Release)
 
 ## Requirements
 A suitable [conda](https://conda.io/) environment named `psp_env` can be created
