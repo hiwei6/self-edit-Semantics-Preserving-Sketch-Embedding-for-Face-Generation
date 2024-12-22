@@ -47,10 +47,29 @@ class pSp(nn.Module):
 		if self.opts.checkpoint_path is not None:
 			print('Loading pSp from checkpoint: {}'.format(self.opts.checkpoint_path))
 			ckpt = torch.load(self.opts.checkpoint_path, map_location='cpu')
+			#print(f"ckpt:\n{ckpt}")
 			self.encoder_sketch_coarse.load_state_dict(get_keys(ckpt, 'encoder_sketch_coarse'), strict=True)
 			self.encoder_sketch_fine.load_state_dict(get_keys(ckpt, 'encoder_sketch_fine'), strict=True)
 			self.encoder_face_fine.load_state_dict(get_keys(ckpt, 'encoder_face_fine'), strict=True)
-			self.decoder.load_state_dict(get_keys(ckpt, 'decoder'), strict=True)
+			#self.decoder.load_state_dict(get_keys(ckpt, 'decoder'), strict=True)
+			#torch.save(self.decoder.state_dict(), '/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/models/decoder_weights.pt')
+			#torch.save(self.decoder.state_dict(), '/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/models/decoder_weights.pkl')
+			#decoder_pt_path = "/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/models/decoder_weights.pt"
+			#decoder_ckpt = torch.load(decoder_pt_path)
+			#print('Loading decoder weights from pretrained!')
+			#decoder_pt_path = "/home/jinghan/stylegan2-ada-pytorch/training-runs/00007-dataset512-auto1-kimg10-resumeffhq1024/network-snapshot-000000.pkl"
+			#decoder_ckpt = torch.load(decoder_pt_path)
+			#decoder_pkl_path = "/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/pretrained_models/stylegan2-ffhq-config-f.pkl"
+			#ckpt = torch.load(self.opts.stylegan_weights)
+
+			print('Loading decoder weights from pretrained!')
+			#decoder_pkl_path = "/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/stylegan2-pytorch/checkpoint/g_ema_040000.pkl"
+			decoder_pkl_path = "/home/jinghan/Semantics-Preserving-Sketch-Embedding-for-Face-Generation/stylegan2-pytorch/checkpoint/unpretrain_g_ema_040000.pkl"
+			decoder_ckpt = torch.load(decoder_pkl_path)
+			print(decoder_ckpt)
+			self.decoder.load_state_dict(decoder_ckpt, strict=True)
+
+			#self.decoder.load_state_dict(ckpt['g_ema'], strict=False)
 			self.__load_latent_avg(ckpt)
 		else:
 			if self.opts.coarse_encoder_checkpoint_path is not None:
@@ -96,7 +115,7 @@ class pSp(nn.Module):
 		else:
 			codes_face_fine=self.encoder_face_fine(self.face_pool(y))
 			codes=codes+torch.cat((codes_sketch_fine[:,:8,:],codes_face_fine[:,8:,:]),dim=1)
-		
+
 		if latent_mask is not None:
 			for i in latent_mask:
 				if inject_latent is not None:
