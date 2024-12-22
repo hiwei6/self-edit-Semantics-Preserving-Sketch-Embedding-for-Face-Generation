@@ -1,4 +1,4 @@
-# Semantics-Preserving Sketch Embedding for Face Generation
+# Semantics-Preserving Sketch Embedding for Face Generation (edition for final project)
 ![Teaser](figure/teaser_1.jpg)
 ### [Paper](https://arxiv.org/abs/2211.13015) 
 <!-- <br> -->
